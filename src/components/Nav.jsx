@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import { googleLogOut, googleLogin, onUserState } from '../api/firebase';
 import UserData from './UserData';
+import { LuPencil } from "react-icons/lu";
 
 function Nav() {
     const [user, setUser] = useState();
@@ -27,7 +28,7 @@ function Nav() {
 
             <div className='userWrap'>
                 {user && user.isAdmin &&
-                <Link to='/product/upload'>업로드</Link>
+                <Link to='/product/upload' className='uploadBtn'>업로드</Link>
                 }
                 {user? (
                     <>
@@ -38,9 +39,9 @@ function Nav() {
                     <button className='loginBtn' onClick={login}>login</button>
                 )}
 
-                {user && <UserData user={user}/>}
+                {/* {user && <UserData user={user}/>}
                 {!user && <button className='loginBtn' onClick={login}>login</button>}
-                {user && <button className='logOutBtn' onClick={logOut}>logout</button>}
+                {user && <button className='logOutBtn' onClick={logOut}>logout</button>} */}
               
                 
             </div>
@@ -55,8 +56,9 @@ const HeaderContainer = styled.header`
     align-items: center;
     padding: 12px;
     gap: 24px;
+    border-bottom: solid 1px rgba(0,0,0,0.1);
 
-    .useWrap{
+    .userWrap{
         display: flex;
         margin-left: auto;
         align-items: center;

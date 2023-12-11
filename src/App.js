@@ -5,12 +5,14 @@ import { Outlet } from 'react-router-dom';
 import { AuthContextProvider } from './context/AuthContext';
 import GlobalStyle from './style/GlobalStyles';
 
-//Outlet 
+//Outlet 상위경로에서 
 function App() {
   return (
     <>
     <AuthContextProvider>
+      <GlobalStyle/>
       <Nav/>
+      
       <Outlet/>
     </AuthContextProvider>
     </>

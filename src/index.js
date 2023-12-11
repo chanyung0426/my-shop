@@ -33,14 +33,15 @@ const routes = createBrowserRouter([
     errorElement : <NotFound/>,
 
     children : [
+      
       {path : '/cart', element : <MyCart/>},
       {path : '/products/detail/:id', element : <ProductDetail/>},
       {
         path : '/product/upload', 
         element : 
-        <ProtectRouter checkAdmin>
-            <UploadProduct/>
-        </ProtectRouter>
+         
+          <UploadProduct/>
+      
         
       }
     ]
