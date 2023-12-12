@@ -10,6 +10,10 @@ function UploadProduct() {
     const [error, setError] = useState(null);
     const fileRef = useRef();
 
+    const colors = [
+        '#ffd1ff', '#fcb69f', '#a6c1ee', '#c2e9fb', '#96e6a1'
+    ]
+  
     
     const [product, setProduct] = useState({
         title : '',
@@ -17,6 +21,7 @@ function UploadProduct() {
         option : '',
         category: '',
         description: '',
+        colors : [],
     }); //모든 상품의 상태를 빈 문자열로 초기화
 
     const productInfoChange = (e) =>{
@@ -26,6 +31,17 @@ function UploadProduct() {
         }else{
             setProduct((prev)=>({...prev, [name]:value}))
         }
+    }
+
+    const colorPicker = (color)=>{
+        console.log(color)
+        setProduct((prev)=>({...prev, colors: prev.colors.includes(color) ?
+          prev.colors : [...prev.colors, color]}))
+    }
+    
+    const removeColor = (colorRemove)=>{
+        setProduct((prev)=>
+        ({...prev, colors : prev.colors.filter(color => color !== colorRemove)}))
     }
 
     //async: 외부와의 통신을 할 때 씀
@@ -45,8 +61,9 @@ function UploadProduct() {
                 title : '',
                 price : '',
                 option : '',
-                category: '',
-                description: '',
+                category : '',
+                description : '',
+                colors : [],
             })
             if(fileRef.current){
                 fileRef.current.value = '';
@@ -96,13 +113,21 @@ function UploadProduct() {
                 />
                 {/* 상품가격 */}
                 
-                <input
+                {/* <input
                 type='text'
                 name='category'
                 placeholder='상품 분류'
                 value={product.category}
                 onChange={productInfoChange}
-                />
+                /> */}
+                <select name='category' value={product.category} onChange={productInfoChange}>
+                    <option value=''>분류 선택</option>
+                    <option value='top'>상의</option>
+                    <option value='bottom'>하의</option>
+                    <option value='outer'>아우터</option>
+                    <option value='accessory'>악세사리</option>
+                    <option value='etc'>기타</option>
+                </select>
                 {/* 상품 분류 */}
 
                 <input
@@ -113,6 +138,25 @@ function UploadProduct() {
                 onChange={productInfoChange}
                 />
                 {/* 상품옵션 */}
+                <ColorChip>
+                    {colors.map((color, index)=>(
+                        <div className='colorChipItem'
+                        key={index}
+                        style={{backgroundColor : color}}
+                        onClick={()=>colorPicker(color)}>
+                        </div>
+                    ))}
+                </ColorChip>
+
+                <ColorSelect>
+                      {product.colors.map((color, index)=>(
+                        <div key={index}
+                        style={{backgroundColor : color}}>
+                            {color}
+                            <button onClick={()=>removeColor(color)}>x</button>
+                            </div>
+                      ))}
+                </ColorSelect>
 
                 <input
                 type='text'
@@ -150,7 +194,7 @@ const FormContainer = styled.div`
         height: auto;
         img{
             display: block;
-            width: 95%;
+            width: 100%;
             height: 100%;
         }
     }
@@ -178,5 +222,31 @@ const FormContainer = styled.div`
                 background: rgba(255,183,245,1);
             }
         }
+    }
+`
+
+const ColorChip = styled.div`
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    .colorChipItem{
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        
+    }
+`
+const ColorSelect = styled.div`
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    div{
+      width: 100px;
+      height: 30px;
+      color: #ffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 `

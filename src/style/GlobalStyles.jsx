@@ -77,7 +77,12 @@ body{
 	overflow-y: hidden;
 }
 body,html{
-	background: #000000;
+	background: #ffffff;
+}
+.container{
+	max-width: 1200px;
+	margin: 0px auto;
+	padding: 100px 0px;
 }
 `
 
