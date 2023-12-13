@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { googleLogOut, googleLogin, onUserState } from '../api/firebase';
 import UserData from './UserData';
 import { LuPencil } from "react-icons/lu";
+import MainMenu from './MainMenu';
 
 function Nav() {
     const [user, setUser] = useState();
@@ -25,6 +26,7 @@ function Nav() {
     return (
         <HeaderContainer>
             <h1><Link to='/'>shop</Link></h1>
+            <MainMenu/>
 
             <div className='userWrap'>
                 {user && user.isAdmin &&

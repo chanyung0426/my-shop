@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import {GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithPopup, signOut} from "firebase/auth";
-import {set,get,getDatabase,ref} from 'firebase/database';
+import {set,get,getDatabase,ref, remove} from 'firebase/database';
 import {v4 as uuid} from 'uuid'
 
 // const firebaseConfig = {
@@ -121,4 +121,33 @@ export async function getProducts(){
    }else{
     return []
    }
+}
+//장바구니 리스트(업데이트, 상품정보 가져오기, 상품 삭제)
+//장바구니 리스트 불러오기
+export async function getCart(userId){
+    try{
+        const snapshot = await(get(ref(database, `cart/${userId}`)));
+        if(snapshot.exists()){
+            const item = snapshot.val();
+            return Object.values(item);
+        }else{
+            return[]
+        }
+    }catch(error){
+        console.error(error)
+    }
+}
+//장바구니 업데이트
+export async function updateCart(userId, product){
+    try{
+        const cartRef = ref(database, `cart/${userId}/${product.id}`);
+        await set(cartRef, product);
+    }catch(error){
+        console.error(error)
+    }
+}
+
+//장바구니 목록 삭제
+export async function deleteCart(userId, productId){
+   return remove(ref(database, `cart/${userId}/${productId}`))
 }

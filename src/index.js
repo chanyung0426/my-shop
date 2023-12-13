@@ -10,9 +10,11 @@ import NotFound from './pages/NotFound';
 import MyCart from './pages/MyCart';
 import ProductDetail from './pages/ProductDetail';
 import UploadProduct from './pages/UploadProduct';
+import CategoryPages from './pages/CategoryPages';
 
 //css
 import './index.css';
+
 
 
 
@@ -28,7 +30,7 @@ const ProtectRouter = ({checkAdmin, children})=>{
 
 const routes = createBrowserRouter([
   {
-    path: '/',
+    path : '/',
     element : <App/>,
     errorElement : <NotFound/>,
 
@@ -36,6 +38,7 @@ const routes = createBrowserRouter([
       
       {path : '/cart', element : <MyCart/>},
       {path : '/products/detail/:id', element : <ProductDetail/>},
+      {path : 'products/:category', element : <CategoryPages/>},
       {
         path : '/product/upload', 
         element : 
