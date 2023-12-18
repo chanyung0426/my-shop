@@ -191,3 +191,27 @@ export async function searchProducts(query){
 
     }
 }
+
+//데이터베이스에 게시글 업로드
+export async function addBoard(user, date, title, text){
+    const id = uuid();
+    const postData = {
+        id,
+        user,
+        date,
+        title,
+        text
+    }
+    return set(ref(database, `/board/${id}`), postData)
+}
+
+//등록된 게시글 가져오기
+export async function getBoard(){
+    return get(ref(database, 'board'))
+    .then((snapshot)=>{
+        if(snapshot.exists()){
+            return Object.values(snapshot.val());
+        } //데이터가 있으면
+        return[]
+    })
+}

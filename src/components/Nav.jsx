@@ -27,6 +27,7 @@ function Nav() {
         <HeaderContainer>
             <h1><Link to='/'>shop</Link></h1>
             <MainMenu/>
+            <Link to='/board/qna'>QnA</Link>
 
             <div className='userWrap'>
                 {user && user.isAdmin &&

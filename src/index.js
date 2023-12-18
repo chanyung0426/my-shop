@@ -12,9 +12,14 @@ import ProductDetail from './pages/ProductDetail';
 import UploadProduct from './pages/UploadProduct';
 import CategoryPages from './pages/CategoryPages';
 import Search from './pages/Search';
+import WritePage from './pages/WritePage';
+import Qna from './pages/Qna';
 
 //css
 import './index.css';
+import BoardDetailPage from './pages/BoardDetailPage';
+
+
 
 
 
@@ -39,6 +44,9 @@ const routes = createBrowserRouter([
     children : [
       
       {path : '/cart', element : <MyCart/>},
+      {path : '/board/write', element: <WritePage/>},
+      {path : '/board/qna', element: <Qna/>},
+      {path : '/board/qna/:id', element : <BoardDetailPage/>},
       {path : '/products/detail/:id', element : <ProductDetail/>},
       {path : 'products/:category', element : <CategoryPages/>},
       {path : '/search', element : <Search/>},
