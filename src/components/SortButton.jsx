@@ -10,8 +10,9 @@ function SortButton({sortName, sortPrice}) {
     )
 }
 
-SortButton.PropTypes = {
+SortButton.propTypes = {
     sortName : PropTypes.func.isRequired,
     sortPrice : PropTypes.func.isRequired,
 }
+
 export default SortButton

@@ -4,10 +4,10 @@ import SortButton from './SortButton';
 import PropTypes from 'prop-types';
 
 function CategoryProductList({category,product}) {
-    const [ sortProducts, setSortPorducts] = useState(product);
+    const [ sortProducts, setSortProducts] = useState(product);
 
     useEffect(()=>{
-        setSortPorducts(product)
+        setSortProducts(product)
     }, [product]);
 
     const sortName = ()=>{
@@ -19,7 +19,7 @@ function CategoryProductList({category,product}) {
             return a.name.charAt(0).localCompare(b.name.charAt(0))
             //localeCompare = 문자열과 문자열을 서로 비교하고 정렬순서에 따라 비교하는 함수
         })
-        setSortProducts(sortList)
+        setSortProducts(sortList);
     }
 
     const sortPrice = ()=>{

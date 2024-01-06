@@ -14,10 +14,13 @@ import CategoryPages from './pages/CategoryPages';
 import Search from './pages/Search';
 import WritePage from './pages/WritePage';
 import Qna from './pages/Qna';
+import Login from './pages/Login';
+import Join from './pages/Join';
+import BoardDetailPage from './pages/BoardDetailPage';
 
 //css
 import './index.css';
-import BoardDetailPage from './pages/BoardDetailPage';
+
 
 
 
@@ -29,10 +32,16 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 //관리자 인증(조건에 하나라도 만족하지 못하면 페이지를 이동할 수 없게 하고 강제로 홈으로 이동)
 
 const ProtectRouter = ({checkAdmin, children})=>{
-  const {user} = useAuthContext();
+  const {user, isLoading} = useAuthContext();
+  
+  if(isLoading){
+    return 
+  }
+
   if(!user || (checkAdmin && !user.isAdmin)){
     return <Navigate to='/' replace/>
   }
+  return children
 }
 
 const routes = createBrowserRouter([
@@ -42,20 +51,22 @@ const routes = createBrowserRouter([
     errorElement : <NotFound/>,
 
     children : [
-      
+
       {path : '/cart', element : <MyCart/>},
+      {path : '/login', element : <Login/>},
+      {path : '/join', element: <Join/>},
       {path : '/board/write', element: <WritePage/>},
       {path : '/board/qna', element: <Qna/>},
       {path : '/board/qna/:id', element : <BoardDetailPage/>},
       {path : '/products/detail/:id', element : <ProductDetail/>},
-      {path : 'products/:category', element : <CategoryPages/>},
+      {path : 'products/:category', element : <CategoryPages/>}, 
       {path : '/search', element : <Search/>},
       {
         path : '/product/upload', 
         element : 
          
           <UploadProduct/>
-      
+            
         
       }
     ]

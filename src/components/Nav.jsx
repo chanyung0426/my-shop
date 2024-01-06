@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import styled from 'styled-components';
 import { googleLogOut, googleLogin, onUserState } from '../api/firebase';
 import UserData from './UserData';
@@ -8,9 +8,11 @@ import MainMenu from './MainMenu';
 
 function Nav() {
     const [user, setUser] = useState();
+    const navigate = useNavigate();
     
     const login = ()=>{
-        googleLogin().then(setUser);
+        // googleLogin().then(setUser);
+        navigate('/login');
     }
     const logOut=()=>{
         googleLogOut().then(setUser);

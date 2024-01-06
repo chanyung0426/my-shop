@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import {GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithPopup, signOut} from "firebase/auth";
+import {GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile} from "firebase/auth";
 import {set,get,getDatabase,ref, remove} from 'firebase/database';
 import {v4 as uuid} from 'uuid'
 
@@ -95,10 +95,30 @@ async function adminUser(user){
         console.error(error)
     }
 }
+
+//상품 가격 변환 함수
+export function formatCurrency(item){
+    const number = parseInt(item) //string을 숫자로 변환하는 작업, parseFloat
+    return number.toLocaleString('ko-KR')
+    //지역에 맞는 단위를 자동으로 구분해서 콤마를 찍어줌
+    /* 
+    ko-KR : 한국
+    en-US : 미국    
+    en-CA : 캐나다  
+    ja-JP : 일본
+    zh-CN : 중국
+    */
+}
+
 //상품을 database에 업로드
 export async function addProducts(product, image){
     //uuid = 식별자를 만들어주는 라이브러리
     //숫자와 영문으로 조합된 식별자 코드를 부여해서 사용하는 라이브러리
+    /* 
+    데이터베이스에 데이터를 저장할 때에는 원시형태의 값으로 유지 시켜서 저장하고 출력할때
+    변환해주는 과정을 넣어주는 것이 일반적이고 가장 안전한 방법으로 보고 있다.
+    우선적으로 변환을 해서 저장하게 되면 지역이 바뀌는 경우 재반환이 필요한 경우가 생긴다.
+    */
     const id = uuid()
     console.log(id)
     return set(ref(database, `products/${id}`),{
@@ -214,4 +234,86 @@ export async function getBoard(){
         } //데이터가 있으면
         return[]
     })
+}
+
+//게시글에 댓글 저장
+export async function addComments(boardId, user, text){
+    const id = uuid();
+    return set(ref(database, `/board/${boardId}/comments/${id}`),{
+        id,
+        user,
+        text
+    })
+}
+export async function getComments(boardId){
+    return get(ref(database, `/board/${boardId}/comments`))
+    .then((snapshot)=>{
+        if(snapshot.exists()){
+            return Object.values(snapshot.val());
+        }
+        return[]
+    })
+}
+
+//리뷰 글 저장
+export async function addReview(productId, user, text){
+    const reviewId = uuid();
+    const reviewRef = ref(database, `review/${productId}/${reviewId}`);
+
+    try{
+        await set(reviewRef,{
+            id : reviewId,
+            user : user,
+            text: text,
+        })
+        return reviewId
+    }catch(error){
+        console.error(error)
+    }
+}
+export async function getReview(productId){
+    const reviewRef = ref(database, `review/${productId}`);
+    try{
+        const snapshot = await get(reviewRef);
+        if(snapshot.exists()){
+            return Object.values(snapshot.val());
+        }else{
+            return [];
+        }
+    }catch(error){
+        console.error(error)
+    }
+}
+
+//이메일 회원가입 저장
+export async function joinEmail(email,password,name){
+    const auth = getAuth() //저장할 사용자 인증폼을 불러옴
+    try{
+        const userData = await createUserWithEmailAndPassword(auth, email, password)
+        //createUserWithEmailAndPassword 사용자 정보 이메일 패스워드만 저장할 수 있으며
+        //추가로 정보를 저장할 때에는 우회하는 방법을 이용해야 한다.
+        
+        const user = userData.user;
+
+        await updateProfile(user, {
+            displayName : name
+        })
+        
+
+        await signOut(auth);
+        return {success : true};
+    }catch(error){
+        console.error({error : error.code})
+        return{error : error.code} //에러가 나는 경우
+    }
+}
+
+//로그인
+export async function loginEmail(email,password){
+    try{
+        const userData = await signInWithEmailAndPassword(auth, email, password)
+        return userData.user
+    }catch(error){
+        console.error(error);
+    }
 }

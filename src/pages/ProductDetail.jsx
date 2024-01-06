@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components';
 import UseCart from '../context/UseCart';
+import ProductReview from '../components/ProductReview';
+import { formatCurrency } from '../api/firebase';
 
 function ProductDetail() {
     const {addItemCart} = UseCart();
@@ -36,7 +38,7 @@ function ProductDetail() {
                 </div>
                 <div className='detailText'>
                     <h3>{title}</h3>
-                    <p className='price'>가격<span>{price}</span></p>
+                    <p className='price'>가격<span>{formatCurrency(price)}</span></p>
                     <p className='description'>{description}</p>
 
                     <div className='detailOpt'>
@@ -53,7 +55,8 @@ function ProductDetail() {
                     <button className='cartBtn' onClick={cartItem}>장바구니 담기</button>
                     <button className='buyBtn'>구매하기</button>
                 </div>
-                {sucess && <p>{sucess}</p>}
+                {sucess && <p>{sucess}</p> }
+                <ProductReview />
             </DetailPage>
            
         </div>

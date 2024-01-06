@@ -218,6 +218,7 @@ const FormContainer = styled.div`
             height: 40px;
             border-radius: 4px;
             border-color: rgba(0,0,0,0.2);
+            border : 2px solid rgba(0,0,0,0.2);
             padding: 6px 12px;
         }
         button{
