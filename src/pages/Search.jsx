@@ -32,20 +32,25 @@ function Search() {
     }
 
     return (
-        <div className='container'>
+        <>
+         <div className='container'>
             <input type='text' value={query} onChange={onSearchEvent} className='searchForm'/>
            
-            <ul className='productList'>
-                {result.map((product)=>(
-                    <li>
-                        <DetailPageEvent key={product.id} product={product}/>
-                    </li>
-                ))}
-            </ul>
+           
         </div>
+         <ul className='productList'>
+         {result.map((product)=>(
+             <li>
+                 <DetailPageEvent key={product.id} product={product}/>
+             </li>
+         ))}
+         </ul>
+        </>
+       
     )
 }
 
 export default Search
+
 
 
